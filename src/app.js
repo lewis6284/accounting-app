@@ -23,6 +23,7 @@ app.use('/api/accounts', require('./routes/accountRoutes'));
 app.use('/api/employees', require('./routes/employeeRoutes'));
 app.use('/api/suppliers', require('./routes/supplierRoutes'));
 app.use('/api/data', require('./routes/dataListRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
 // Database Sync & Server Start
 const PORT = process.env.PORT || 5000;

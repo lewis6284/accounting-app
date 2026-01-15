@@ -1,5 +1,7 @@
+
 # Node modules
 node_modules/
+
 
 # Environment variables
 .env
@@ -18,3 +20,10 @@ logs/
 .vscode/
 .idea/
 .DS_Store
+node_modules/
+.env
+venv/
+__pycache__/
+dist/
+build/
+ 
