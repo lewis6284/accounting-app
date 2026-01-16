@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const CandidateController = require('../controllers/CandidateController');
+const checkAuth = require('../middleware/authMiddleware');
 
-router.post('/', CandidateController.createCandidate);
-router.get('/', CandidateController.getAllCandidates);
-router.get('/:id', CandidateController.getCandidateById);
-router.put('/:id', CandidateController.updateCandidate);
-router.delete('/:id', CandidateController.deleteCandidate);
+router.post('/', checkAuth, CandidateController.createCandidate);
+router.get('/', checkAuth, CandidateController.getAllCandidates);
+router.get('/:id', checkAuth, CandidateController.getCandidateById);
+router.put('/:id', checkAuth, CandidateController.updateCandidate);
+router.delete('/:id', checkAuth, CandidateController.deleteCandidate);
 
 module.exports = router;

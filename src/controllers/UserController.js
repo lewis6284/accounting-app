@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, agency_id } = req.body;
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -13,7 +13,8 @@ exports.register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role ? role.toLowerCase() : 'accountant'
+            role: role ? role.toLowerCase() : 'accountant',
+            agency_id: agency_id || null
         });
 
         res.status(201).json({ message: 'User created successfully', userId: user.id });
@@ -37,7 +38,7 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id, email: user.email, role: user.role },
+            { id: user.id, email: user.email, role: user.role, agency_id: user.agency_id },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -49,7 +50,8 @@ exports.login = async (req, res) => {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                agency_id: user.agency_id
             }
         });
     } catch (err) {

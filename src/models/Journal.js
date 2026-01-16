@@ -7,40 +7,49 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        date: {
-            type: DataTypes.DATEONLY,
-            allowNull: false
-        },
-        type: {
-            type: DataTypes.TEXT,
+        agency_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            validate: {
-                isIn: [['ENTRY', 'EXIT']]
+            references: {
+                model: 'agencies',
+                key: 'id'
             }
-        },
-        amount: {
-            type: DataTypes.REAL,
-            allowNull: false,
-            validate: {
-                min: 0.01 // > 0
-            }
-        },
-        currency: {
-            type: DataTypes.TEXT,
-            defaultValue: 'Fbu'
         },
         account_id: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
+        },
+        created_by: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
+        },
+        transaction_type: {
+            type: DataTypes.TEXT,
             allowNull: false
         },
         source_table: {
             type: DataTypes.TEXT,
-            validate: {
-                isIn: [['revenue_manual', 'revenue_automatic', 'expenses', 'salary_payments']]
-            }
+            allowNull: false
         },
         source_id: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        currency: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        amount: {
+            type: DataTypes.REAL,
+            allowNull: false
         },
         balance_after: {
             type: DataTypes.REAL,

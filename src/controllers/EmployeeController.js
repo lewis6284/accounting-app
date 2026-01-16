@@ -2,7 +2,7 @@ const EmployeeService = require('../services/EmployeeService');
 
 exports.getAllEmployees = async (req, res) => {
     try {
-        const employees = await EmployeeService.getAllEmployees();
+        const employees = await EmployeeService.getAllEmployees(req.user.agency_id);
         res.json(employees);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -11,8 +11,10 @@ exports.getAllEmployees = async (req, res) => {
 
 exports.createEmployee = async (req, res) => {
     try {
-        console.log('DEBUG: EmployeeController.createEmployee received:', req.body);
-        const employee = await EmployeeService.createEmployee(req.body);
+        const employee = await EmployeeService.createEmployee({
+            ...req.body,
+            agency_id: req.body.agency_id || req.user.agency_id
+        });
         res.status(201).json(employee);
     } catch (err) {
         console.error('Create Employee Error Stack:', err.stack); // Log full stack

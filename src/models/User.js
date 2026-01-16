@@ -27,7 +27,14 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: false,
             validate: {
-                isIn: [['admin', 'accountant']]
+                isIn: [['ADMIN', 'ACCOUNTANT']]
+            }
+        },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'agencies',
+                key: 'id'
             }
         },
         created_at: {

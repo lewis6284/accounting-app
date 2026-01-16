@@ -13,13 +13,15 @@ exports.createExpense = async (req, res) => {
         }
 
         const expense = await ExpenseService.createExpense({
+            agency_id: req.user.agency_id,
+            created_by: req.user.id,
             date,
             amount,
             category_id,
             account_id,
             description,
             beneficiary_type,
-            beneficiary_id
+            beneficiary_id: beneficiary_id === '' ? null : beneficiary_id
         });
         res.status(201).json(expense);
     } catch (err) {
@@ -30,7 +32,7 @@ exports.createExpense = async (req, res) => {
 
 exports.getAllExpenses = async (req, res) => {
     try {
-        const expenses = await ExpenseService.getAllExpenses();
+        const expenses = await ExpenseService.getAllExpenses(req.user.agency_id);
         res.json(expenses);
     } catch (err) {
         console.error(err);
@@ -40,9 +42,9 @@ exports.getAllExpenses = async (req, res) => {
 
 exports.updateExpense = async (req, res) => {
     try {
-        const expense = await ExpenseService.updateExpense(req.params.id, req.body);
-        if (!expense) return res.status(404).json({ error: 'Expense not found' });
-        res.json(expense);
+        // Business Rule: Financial records are immutable. 
+        // Only non-financial fields could be updated, but for simplicity, we block updates that affect totals.
+        return res.status(403).json({ error: 'Financial records are immutable. Updates are restricted.' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error updating expense' });
@@ -51,9 +53,7 @@ exports.updateExpense = async (req, res) => {
 
 exports.deleteExpense = async (req, res) => {
     try {
-        const result = await ExpenseService.deleteExpense(req.params.id);
-        if (!result) return res.status(404).json({ error: 'Expense not found' });
-        res.json({ message: 'Expense deleted successfully' });
+        return res.status(403).json({ error: 'Financial records are immutable and cannot be deleted.' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error deleting expense' });

@@ -7,6 +7,14 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
         date: {
             type: DataTypes.DATEONLY,
             allowNull: false
@@ -15,36 +23,47 @@ module.exports = (sequelize) => {
             type: DataTypes.REAL,
             allowNull: false,
             validate: {
-                min: 0.01 // > 0
+                min: 0.01
             }
-        },
-        currency: {
-            type: DataTypes.TEXT,
-            defaultValue: 'Fbu'
         },
         category_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            references: {
+                model: 'expense_categories',
+                key: 'id'
+            }
         },
         beneficiary_type: {
-            type: DataTypes.TEXT,
-            validate: {
-                isIn: [['SUPPLIER', 'EMPLOYEE', 'OTHER']]
-            }
+            type: DataTypes.TEXT
         },
         beneficiary_id: {
             type: DataTypes.INTEGER
         },
         account_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
+        },
+        created_by: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
         },
         description: {
             type: DataTypes.TEXT
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+        status: {
+            type: DataTypes.TEXT,
+            defaultValue: 'VALID',
+            validate: {
+                isIn: [['VALID', 'CANCELLED']]
+            }
         }
     }, {
         tableName: 'expenses',

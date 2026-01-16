@@ -7,9 +7,21 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
         revenue_type_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'revenue_types',
+                key: 'id'
+            }
         },
         revenue_name: {
             type: DataTypes.TEXT,
@@ -19,12 +31,8 @@ module.exports = (sequelize) => {
             type: DataTypes.REAL,
             allowNull: false,
             validate: {
-                min: 0.01 // > 0
+                min: 0.01
             }
-        },
-        currency: {
-            type: DataTypes.TEXT,
-            defaultValue: 'Fbu'
         },
         date: {
             type: DataTypes.DATEONLY,
@@ -32,17 +40,22 @@ module.exports = (sequelize) => {
         },
         account_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
         },
         description: {
             type: DataTypes.TEXT
         },
         created_by: {
-            type: DataTypes.INTEGER
-        },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
         }
     }, {
         tableName: 'revenue_manual',

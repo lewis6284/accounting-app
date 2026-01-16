@@ -7,10 +7,25 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
+        bank_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'banks',
+                key: 'id'
+            }
+        },
         name: {
             type: DataTypes.TEXT,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
         type: {
             type: DataTypes.TEXT,
@@ -19,12 +34,17 @@ module.exports = (sequelize) => {
                 isIn: [['CASH', 'BANK', 'MOBILE']]
             }
         },
+        currency: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            validate: {
+                isIn: [['FBu', 'USD', 'EUR', 'OMR', 'SAR', 'AED']]
+            }
+        },
         balance: {
             type: DataTypes.REAL,
             defaultValue: 0,
-            validate: {
-                min: 0
-            }
+            allowNull: false
         }
     }, {
         tableName: 'accounts',

@@ -15,11 +15,16 @@ class RevenueService {
     // ===========================================
     // MANUAL REVENUE
     // ===========================================
-    static async createManualRevenue({ revenue_type_id, revenue_name, amount, date, account_id, description, created_by }) {
+    static async createManualRevenue({ agency_id, revenue_type_id, revenue_name, amount, date, account_id, description, created_by }) {
         const t = await sequelize.transaction();
         try {
+            // 0. Get Account for currency
+            const account = await Account.findByPk(account_id, { transaction: t });
+            if (!account) throw new Error('Account not found');
+
             // 1. Create Revenue Manual
             const revenue = await RevenueManual.create({
+                agency_id,
                 revenue_type_id,
                 revenue_name,
                 amount,
@@ -29,14 +34,16 @@ class RevenueService {
                 created_by
             }, { transaction: t });
 
-            // 2. Journal Entry (ENTRY)
-            await JournalService.createEntry({
-                date: revenue.date,
-                type: 'ENTRY',
-                amount: revenue.amount,
+            // 2. Journal Entry (REVENUE - Positive amount)
+            await JournalService.recordTransaction({
+                agency_id,
                 account_id,
+                created_by,
+                transaction_type: 'REVENUE',
                 source_table: 'revenue_manual',
-                source_id: revenue.id
+                source_id: revenue.id,
+                currency: account.currency,
+                amount: Math.abs(amount)
             }, t);
 
             // 3. Receipt
@@ -61,11 +68,13 @@ class RevenueService {
         }
     }
 
-    static async getAllManualRevenues() {
+    static async getAllManualRevenues(agency_id) {
+        const whereClause = agency_id ? { agency_id } : {};
         return await RevenueManual.findAll({
+            where: whereClause,
             include: [
                 { model: RevenueType, attributes: ['name'] },
-                { model: Account, attributes: ['name'] },
+                { model: Account, attributes: ['name', 'currency'] },
                 { model: User, attributes: ['name'] }
             ]
         });

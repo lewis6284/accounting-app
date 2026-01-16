@@ -7,24 +7,36 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
         candidate_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'candidates',
+                key: 'id'
+            }
         },
         payment_type_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'candidate_payment_types', // Assumed table name from SQL
+                key: 'id'
+            }
         },
         amount: {
             type: DataTypes.REAL,
             allowNull: false,
             validate: {
-                min: 0.01 // > 0
+                min: 0.01
             }
-        },
-        currency: {
-            type: DataTypes.TEXT,
-            defaultValue: 'Fbu'
         },
         payment_date: {
             type: DataTypes.DATEONLY,
@@ -32,11 +44,19 @@ module.exports = (sequelize) => {
         },
         account_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+        created_by: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
         }
     }, {
         tableName: 'candidate_payments',

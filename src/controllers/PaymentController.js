@@ -2,17 +2,21 @@ const PaymentService = require('../services/PaymentService');
 
 exports.createCandidatePayment = async (req, res) => {
     try {
-        const result = await PaymentService.createCandidatePayment(req.body);
+        const result = await PaymentService.createCandidatePayment({
+            ...req.body,
+            agency_id: req.user.agency_id,
+            created_by: req.user.id
+        });
         res.json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Error processing candidate payment' });
+        res.status(500).json({ error: err.message || 'Error processing candidate payment' });
     }
 };
 
 exports.getAllCandidatePayments = async (req, res) => {
     try {
-        const payments = await PaymentService.getAllCandidatePayments();
+        const payments = await PaymentService.getAllCandidatePayments(req.user.agency_id);
         res.json(payments);
     } catch (err) {
         console.error(err);
@@ -22,17 +26,21 @@ exports.getAllCandidatePayments = async (req, res) => {
 
 exports.createSalaryPayment = async (req, res) => {
     try {
-        const result = await PaymentService.createSalaryPayment(req.body);
+        const result = await PaymentService.createSalaryPayment({
+            ...req.body,
+            agency_id: req.user.agency_id,
+            created_by: req.user.id
+        });
         res.json(result);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Error processing salary payment' });
+        res.status(500).json({ error: err.message || 'Error processing salary payment' });
     }
 };
 
 exports.getAllSalaryPayments = async (req, res) => {
     try {
-        const payments = await PaymentService.getAllSalaryPayments();
+        const payments = await PaymentService.getAllSalaryPayments(req.user.agency_id);
         res.json(payments);
     } catch (err) {
         console.error(err);

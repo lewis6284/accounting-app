@@ -7,9 +7,18 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
         candidate_code: {
             type: DataTypes.TEXT,
-            unique: true
+            unique: true,
+            allowNull: false
         },
         name: {
             type: DataTypes.TEXT,
@@ -25,37 +34,16 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT
         },
         gender: {
-            type: DataTypes.TEXT,
-            validate: {
-                isIn: [['MALE', 'FEMALE', 'OTHER']]
-            }
+            type: DataTypes.TEXT
         },
         marital_status: {
-            type: DataTypes.TEXT,
-            validate: {
-                isIn: [['SINGLE', 'MARRIED', 'DIVORCED']]
-            }
+            type: DataTypes.TEXT
         },
         passport_number: {
-            type: DataTypes.TEXT,
-            unique: true
-        },
-        passport_issue_date: {
-            type: DataTypes.DATEONLY
-        },
-        passport_expiry_date: {
-            type: DataTypes.DATEONLY
-        },
-        passport_status: {
-            type: DataTypes.TEXT,
-            defaultValue: 'NONE',
-            validate: {
-                isIn: [['NONE', 'APPLIED', 'ISSUED', 'EXPIRED']]
-            }
+            type: DataTypes.TEXT
         },
         national_id: {
-            type: DataTypes.TEXT,
-            unique: true
+            type: DataTypes.TEXT
         },
         position_applied: {
             type: DataTypes.TEXT
@@ -64,12 +52,16 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             defaultValue: 'PENDING',
             validate: {
-                isIn: [['PENDING', 'APPROVED', 'REJECTED', 'DEPLOYED']]
+                isIn: [['PENDING', 'PAID', 'READY', 'DEPLOYED', 'CANCELLED']]
             }
         },
         created_by: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
         },
         created_at: {
             type: DataTypes.DATE,

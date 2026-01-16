@@ -7,9 +7,21 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'agencies',
+                key: 'id'
+            }
+        },
         employee_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'employees',
+                key: 'id'
+            }
         },
         month: {
             type: DataTypes.TEXT,
@@ -22,21 +34,25 @@ module.exports = (sequelize) => {
                 min: 0.01 // > 0
             }
         },
-        currency: {
-            type: DataTypes.TEXT,
-            defaultValue: 'Fbu'
-        },
         payment_date: {
             type: DataTypes.DATEONLY,
             allowNull: false
         },
         account_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'accounts',
+                key: 'id'
+            }
         },
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+        created_by: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'id'
+            }
         }
     }, {
         tableName: 'salary_payments',

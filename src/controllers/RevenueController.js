@@ -2,17 +2,21 @@ const RevenueService = require('../services/RevenueService');
 
 exports.createManualRevenue = async (req, res) => {
     try {
-        const revenue = await RevenueService.createManualRevenue(req.body);
+        const revenue = await RevenueService.createManualRevenue({
+            ...req.body,
+            agency_id: req.user.agency_id,
+            created_by: req.user.id
+        });
         res.status(201).json(revenue);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Error creating manual revenue' });
+        res.status(500).json({ error: err.message || 'Error creating manual revenue' });
     }
 };
 
 exports.getAllManualRevenues = async (req, res) => {
     try {
-        const revenues = await RevenueService.getAllManualRevenues();
+        const revenues = await RevenueService.getAllManualRevenues(req.user.agency_id);
         res.json(revenues);
     } catch (err) {
         console.error(err);

@@ -1,12 +1,18 @@
-const { Candidate, User } = require('../models');
+const { Candidate, User, CandidatePayment, CandidatePaymentType, Account, Agency } = require('../models');
 const { Op } = require('sequelize');
 const moment = require('moment');
 
 class CandidateService {
     static async createCandidate(data) {
+        // Validate Agency Existence
+        const agencyExists = await Agency.findByPk(data.agency_id);
+        if (!agencyExists) {
+            throw new Error(`Invalid Agency ID: ${data.agency_id}`);
+        }
+
         // Generate ID: cand2026-001-0001
         const year = moment().format('YYYY');
-        const societeCode = '001';
+        const societeCode = '001'; // This could be dynamic based on agency if needed
         const prefix = `cand${year}-${societeCode}-`;
 
         // Find last candidate with this prefix
@@ -21,9 +27,13 @@ class CandidateService {
         if (lastCandidate && lastCandidate.candidate_code) {
             const lastCode = lastCandidate.candidate_code;
             const parts = lastCode.split('-');
+            // Check if parts length matches expected format (candYYYY, 001, 0001) -> 3 parts
             if (parts.length === 3) {
                 const seqPart = parts[2];
-                sequence = parseInt(seqPart, 10) + 1;
+                const parsedSeq = parseInt(seqPart, 10);
+                if (!isNaN(parsedSeq)) {
+                    sequence = parsedSeq + 1;
+                }
             }
         }
 
@@ -36,10 +46,13 @@ class CandidateService {
         });
     }
 
-    static async getAllCandidates() {
+    static async getAllCandidates(agency_id) {
+        const whereClause = agency_id ? { agency_id } : {};
         return await Candidate.findAll({
+            where: whereClause,
             include: [
-                { model: User, attributes: ['id', 'name'] }
+                { model: User, attributes: ['id', 'name'] },
+                { model: Agency, attributes: ['id', 'name'] }
             ]
         });
     }
@@ -48,6 +61,7 @@ class CandidateService {
         return await Candidate.findByPk(id, {
             include: [
                 { model: User, attributes: ['id', 'name'] },
+                { model: Agency, attributes: ['id', 'name'] },
                 {
                     model: CandidatePayment,
                     include: ['CandidatePaymentType', 'Account']
@@ -63,9 +77,11 @@ class CandidateService {
     }
 
     static async deleteCandidate(id) {
+        // Business Rule: No permanent delete for financial/audit entities.
         const candidate = await Candidate.findByPk(id);
         if (!candidate) return null;
-        return await candidate.destroy();
+        // In this system, we might change status to 'CANCELLED' instead of destroying.
+        return await candidate.update({ status: 'CANCELLED' });
     }
 }
 

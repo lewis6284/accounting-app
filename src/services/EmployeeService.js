@@ -54,8 +54,9 @@ exports.createEmployee = async (data) => {
     return await Employee.create(data);
 };
 
-exports.getAllEmployees = async () => {
-    return await Employee.findAll();
+exports.getAllEmployees = async (agency_id) => {
+    const whereClause = agency_id ? { agency_id } : {};
+    return await Employee.findAll({ where: whereClause });
 };
 
 exports.getEmployeeById = async (id) => {
