@@ -142,7 +142,7 @@ class PaymentService {
         return await SalaryPayment.findAll({
             where: whereClause,
             include: [
-                { model: Employee, attributes: ['name', 'position'] },
+                { model: Employee, attributes: ['name', 'job_function'] },
                 { model: Account, attributes: ['name', 'currency'] }
             ]
         });
