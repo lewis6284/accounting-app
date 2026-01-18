@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT
         }
     }, {
-        tableName: 'revenue_types',
+        tableName: 'alsuwedi_revenue_types',
         timestamps: false
     });
 

@@ -61,10 +61,14 @@ class CandidateService {
         return await Candidate.findByPk(id, {
             include: [
                 { model: User, attributes: ['id', 'name'] },
+
                 { model: Agency, attributes: ['id', 'name'] },
                 {
                     model: CandidatePayment,
-                    include: ['CandidatePaymentType', 'Account']
+                    include: [
+                        { model: CandidatePaymentType },
+                        { model: Account }
+                    ]
                 }
             ]
         });

@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
             defaultValue: 'Burundi'
         }
     }, {
-        tableName: 'banks',
+        tableName: 'alsuwedi_banks',
         timestamps: false
     });
 

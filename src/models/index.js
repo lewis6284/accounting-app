@@ -1,9 +1,13 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const path = require('path');
+require('dotenv').config();
 
 const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: path.join(__dirname, '../database.sqlite')
+    dialect: 'mysql',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PSWD,
 });
 
 // Import models

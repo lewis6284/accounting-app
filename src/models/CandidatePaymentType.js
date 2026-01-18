@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT
         }
     }, {
-        tableName: 'candidate_payment_types',
+        tableName: 'alsuwedi_candidate_payment_types',
         timestamps: false
     });
 

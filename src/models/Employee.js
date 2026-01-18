@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -47,7 +47,7 @@ module.exports = (sequelize) => {
             }
         }
     }, {
-        tableName: 'employees', // Changed from 'Employees' to 'employees' to match SQL
+        tableName: 'alsuwedi_employees', // Changed from 'Employees' to 'employees' to match SQL
         timestamps: false
     });
 

@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: true,
             references: {
-                model: 'banks',
+                model: 'alsuwedi_banks',
                 key: 'id'
             }
         },
@@ -47,7 +47,7 @@ module.exports = (sequelize) => {
             allowNull: false
         }
     }, {
-        tableName: 'accounts',
+        tableName: 'alsuwedi_accounts',
         timestamps: false
     });
 

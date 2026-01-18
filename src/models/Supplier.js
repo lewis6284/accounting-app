@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             unique: true
         }
     }, {
-        tableName: 'suppliers',
+        tableName: 'alsuwedi_suppliers',
         timestamps: false
     });
 

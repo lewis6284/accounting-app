@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'candidates',
+                model: 'alsuwedi_candidates',
                 key: 'id'
             }
         },
@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'candidate_payment_types', // Assumed table name from SQL
+                model: 'alsuwedi_candidate_payment_types',
                 key: 'id'
             }
         },
@@ -46,7 +46,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'accounts',
+                model: 'alsuwedi_accounts',
                 key: 'id'
             }
         },
@@ -54,12 +54,12 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'alsuwedi_users',
                 key: 'id'
             }
         }
     }, {
-        tableName: 'candidate_payments',
+        tableName: 'alsuwedi_candidate_payments',
         timestamps: false
     });
 

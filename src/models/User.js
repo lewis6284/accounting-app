@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
         agency_id: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -42,7 +42,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.NOW
         }
     }, {
-        tableName: 'users',
+        tableName: 'alsuwedi_users',
         timestamps: false
     });
 

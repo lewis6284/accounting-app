@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role ? role.toLowerCase() : 'accountant',
+            role: role ? role.toUpperCase() : 'ACCOUNTANT',
             agency_id: agency_id || null
         });
 

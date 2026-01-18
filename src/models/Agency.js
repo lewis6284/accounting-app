@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
             defaultValue: 'Burundi'
         }
     }, {
-        tableName: 'agencies',
+        tableName: 'alsuwedi_agencies',
         timestamps: false
     });
 

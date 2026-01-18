@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'employees',
+                model: 'alsuwedi_employees',
                 key: 'id'
             }
         },
@@ -42,7 +42,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'accounts',
+                model: 'alsuwedi_accounts',
                 key: 'id'
             }
         },
@@ -50,12 +50,12 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'alsuwedi_users',
                 key: 'id'
             }
         }
     }, {
-        tableName: 'salary_payments',
+        tableName: 'alsuwedi_salary_payments',
         timestamps: false
     });
 

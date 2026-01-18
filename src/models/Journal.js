@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'accounts',
+                model: 'alsuwedi_accounts',
                 key: 'id'
             }
         },
@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'alsuwedi_users',
                 key: 'id'
             }
         },
@@ -60,7 +60,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.NOW
         }
     }, {
-        tableName: 'journal',
+        tableName: 'alsuwedi_journal',
         timestamps: false
     });
 

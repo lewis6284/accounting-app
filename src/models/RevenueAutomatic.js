@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: false,
             validate: {
-                isIn: [['candidate_payments']]
+                isIn: [['alsuwedi_candidate_payments']]
             }
         },
         source_id: {
@@ -48,7 +48,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.NOW
         }
     }, {
-        tableName: 'revenue_automatic',
+        tableName: 'alsuwedi_revenue_automatic',
         timestamps: false
     });
 

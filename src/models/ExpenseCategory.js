@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             unique: true
         }
     }, {
-        tableName: 'expense_categories',
+        tableName: 'alsuwedi_expense_categories',
         timestamps: false
     });
 

@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'agencies',
+                model: 'alsuwedi_agencies',
                 key: 'id'
             }
         },
@@ -45,6 +45,16 @@ module.exports = (sequelize) => {
         national_id: {
             type: DataTypes.TEXT
         },
+        passport_status: {
+            type: DataTypes.TEXT
+        },
+        passport_issue_date: {
+            type: DataTypes.DATEONLY
+        },
+        passport_expiry_date: {
+            type: DataTypes.DATEONLY
+        },
+
         position_applied: {
             type: DataTypes.TEXT
         },
@@ -52,14 +62,15 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             defaultValue: 'PENDING',
             validate: {
-                isIn: [['PENDING', 'PAID', 'READY', 'DEPLOYED', 'CANCELLED']]
+                isIn: [['PENDING', 'APPROVED', 'REJECTED', 'PAID', 'READY', 'DEPLOYED', 'CANCELLED']]
             }
+
         },
         created_by: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'alsuwedi_users',
                 key: 'id'
             }
         },
@@ -68,7 +79,7 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.NOW
         }
     }, {
-        tableName: 'candidates',
+        tableName: 'alsuwedi_candidates',
         timestamps: false
     });
 
