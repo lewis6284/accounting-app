@@ -42,7 +42,9 @@ Agency.hasMany(Expense, { foreignKey: 'agency_id' });
 Agency.hasMany(Candidate, { foreignKey: 'agency_id' });
 Agency.hasMany(CandidatePayment, { foreignKey: 'agency_id' });
 Agency.hasMany(RevenueManual, { foreignKey: 'agency_id' });
-// Agency.hasMany(RevenueAutomatic, { foreignKey: 'agency_id' }); // Assuming added if table updated
+Agency.hasMany(RevenueAutomatic, { foreignKey: 'agency_id' });
+Agency.hasMany(Receipt, { foreignKey: 'agency_id' });
+
 Agency.hasMany(Journal, { foreignKey: 'agency_id' });
 
 // --- Bank ---
@@ -92,6 +94,8 @@ RevenueManual.belongsTo(Agency, { foreignKey: 'agency_id', onDelete: 'RESTRICT' 
 RevenueAutomatic.belongsTo(Candidate, { foreignKey: 'candidate_id' });
 RevenueAutomatic.belongsTo(CandidatePaymentType, { foreignKey: 'payment_type_id' });
 RevenueAutomatic.belongsTo(Account, { foreignKey: 'account_id' });
+RevenueAutomatic.belongsTo(Agency, { foreignKey: 'agency_id' });
+
 
 // --- Journal ---
 Journal.belongsTo(Account, { foreignKey: 'account_id', onDelete: 'RESTRICT' });
@@ -100,6 +104,8 @@ Journal.belongsTo(Agency, { foreignKey: 'agency_id', onDelete: 'RESTRICT' });
 
 // --- Receipts ---
 Receipt.belongsTo(Account, { foreignKey: 'account_id' });
+Receipt.belongsTo(Agency, { foreignKey: 'agency_id' });
+
 
 // Export
 module.exports = {

@@ -2,12 +2,16 @@ const PaymentService = require('../services/PaymentService');
 
 exports.createCandidatePayment = async (req, res) => {
     try {
+        const { agency_id, ...otherData } = req.body;
+        const finalAgencyId = agency_id || req.user.agency_id;
+
         const result = await PaymentService.createCandidatePayment({
-            ...req.body,
-            agency_id: req.user.agency_id,
+            ...otherData,
+            agency_id: finalAgencyId,
             created_by: req.user.id
         });
         res.json(result);
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: err.message || 'Error processing candidate payment' });
@@ -26,12 +30,16 @@ exports.getAllCandidatePayments = async (req, res) => {
 
 exports.createSalaryPayment = async (req, res) => {
     try {
+        const { agency_id, ...otherData } = req.body;
+        const finalAgencyId = agency_id || req.user.agency_id;
+
         const result = await PaymentService.createSalaryPayment({
-            ...req.body,
-            agency_id: req.user.agency_id,
+            ...otherData,
+            agency_id: finalAgencyId,
             created_by: req.user.id
         });
         res.json(result);
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: err.message || 'Error processing salary payment' });

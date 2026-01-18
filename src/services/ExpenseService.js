@@ -6,13 +6,17 @@ class ExpenseService {
     static async createExpense({ agency_id, created_by, date, amount, category_id, beneficiary_type, beneficiary_id, account_id, description }) {
         const t = await sequelize.transaction();
         try {
-            // 0. Get Account for currency validation
+            // 0. Get Account for currency & agency fallback
             const account = await Account.findByPk(account_id, { transaction: t });
             if (!account) throw new Error('Account not found');
 
+            const finalAgencyId = agency_id || account.agency_id;
+            if (!finalAgencyId) throw new Error('Agency ID is required');
+
             // 1. Create Expense
             const expense = await Expense.create({
-                agency_id,
+                agency_id: finalAgencyId,
+
                 created_by,
                 date: date || moment().format('YYYY-MM-DD'),
                 amount,
@@ -25,15 +29,17 @@ class ExpenseService {
 
             // 2. Journal Entry (EXPENSE - Negative amount)
             await JournalService.recordTransaction({
-                agency_id,
+                agency_id: finalAgencyId,
                 account_id,
                 created_by,
                 transaction_type: 'EXPENSE',
-                source_table: 'expenses',
+                source_table: 'alsuwedi_expenses',
                 source_id: expense.id,
                 currency: account.currency,
                 amount: -Math.abs(amount) // Ensure negative for journal
             }, t);
+
+
 
             await t.commit();
             return expense;

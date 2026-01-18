@@ -7,7 +7,16 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
+        agency_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'alsuwedi_agencies',
+                key: 'id'
+            }
+        },
         source_table: {
+
             type: DataTypes.TEXT,
             allowNull: false,
             validate: {

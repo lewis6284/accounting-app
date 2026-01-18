@@ -18,14 +18,18 @@ class RevenueService {
     static async createManualRevenue({ agency_id, revenue_type_id, revenue_name, amount, date, account_id, description, created_by }) {
         const t = await sequelize.transaction();
         try {
-            // 0. Get Account for currency
+            // 0. Get Account for currency & agency fallback
             const account = await Account.findByPk(account_id, { transaction: t });
             if (!account) throw new Error('Account not found');
 
+            const finalAgencyId = agency_id || account.agency_id;
+            if (!finalAgencyId) throw new Error('Agency ID is required');
+
             // 1. Create Revenue Manual
             const revenue = await RevenueManual.create({
-                agency_id,
+                agency_id: finalAgencyId,
                 revenue_type_id,
+
                 revenue_name,
                 amount,
                 date: date || moment().format('YYYY-MM-DD'),
@@ -36,28 +40,32 @@ class RevenueService {
 
             // 2. Journal Entry (REVENUE - Positive amount)
             await JournalService.recordTransaction({
-                agency_id,
+                agency_id: finalAgencyId,
                 account_id,
                 created_by,
                 transaction_type: 'REVENUE',
-                source_table: 'revenue_manual',
+                source_table: 'alsuwedi_revenue_manual',
                 source_id: revenue.id,
                 currency: account.currency,
                 amount: Math.abs(amount)
             }, t);
 
+
             // 3. Receipt
             // Assumption: Payer is a generic Customer for manual revenue
             await Receipt.create({
+                agency_id: finalAgencyId,
                 receipt_number: RevenueService.generateReceiptNumber(),
+
                 date: revenue.date,
                 amount: revenue.amount,
                 account_id,
                 payer_type: 'CUSTOMER', // Defaulting to CUSTOMER
                 payer_id: null, // No specific ID link for manual string names
-                source_table: 'revenue_manual',
+                source_table: 'alsuwedi_revenue_manual',
                 source_id: revenue.id
             }, { transaction: t });
+
 
             await t.commit();
             return revenue;

@@ -2,7 +2,7 @@ const ExpenseService = require('../services/ExpenseService');
 
 exports.createExpense = async (req, res) => {
     try {
-        const { date, amount, category_id, account_id, description, beneficiary_type, beneficiary_id } = req.body;
+        const { agency_id, date, amount, category_id, account_id, description, beneficiary_type, beneficiary_id } = req.body;
 
         if (!amount || !category_id || !account_id) {
             return res.status(400).json({ error: 'Missing required fields: amount, category_id, account_id are required.' });
@@ -12,8 +12,10 @@ exports.createExpense = async (req, res) => {
             return res.status(400).json({ error: 'Invalid amount: Must be a positive number.' });
         }
 
+        const finalAgencyId = agency_id || req.user.agency_id;
+
         const expense = await ExpenseService.createExpense({
-            agency_id: req.user.agency_id,
+            agency_id: finalAgencyId,
             created_by: req.user.id,
             date,
             amount,
@@ -24,6 +26,7 @@ exports.createExpense = async (req, res) => {
             beneficiary_id: beneficiary_id === '' ? null : beneficiary_id
         });
         res.status(201).json(expense);
+
     } catch (err) {
         console.error('Create Expense Error:', err);
         res.status(500).json({ error: err.message || 'Error creating expense' });
